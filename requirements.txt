@@ -15,3 +15,4 @@ tavily-python
 requests
 langchain-mcp-adapters
 nest_asyncio
+langgraph-checkpoint-postgres
