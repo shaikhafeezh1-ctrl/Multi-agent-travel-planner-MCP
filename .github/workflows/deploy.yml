@@ -16,6 +16,6 @@ jobs:
         run: npm install -g @railway/cli
 
       - name: Deploy to Railway
-        run: railway up --service Multi-agent-travel-planner-MCP --project 04550747-2106-4251-8462-0a2bb2a1fa52
+        run: railway up --service Multi-agent-travel-planner-MCP --project 04550747-2106-4251-8462-0a2bb2a1fa52 --environment production
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
