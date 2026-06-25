@@ -1,0 +1,18 @@
+# Environment
+.env
+
+# Virtual environments
+Agent1/
+aviationstack-mcp/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Testing files
+test_weather_mcp.py
+testing_ava_MCP_server.py
+
+aviationstack-mcp/.venv/
+aviationstack-mcp/.env

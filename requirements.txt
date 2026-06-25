@@ -1,0 +1,17 @@
+langchain-openai
+langchain-community
+langchain-groq
+langgraph
+langchain
+pydantic
+fastapi
+uvicorn
+streamlit
+langchain-tavily
+psycopg[binary]
+psycopg_pool
+python-dotenv
+tavily-python
+requests
+streamlit
+streamlit
