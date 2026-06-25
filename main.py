@@ -236,14 +236,14 @@ async def setup():
     checkpointer = AsyncPostgresSaver(_pool)  # pass pool, not connection
     await checkpointer.setup()
     return checkpointer
-import nest_asyncio
-nest_asyncio.apply()
+# import nest_asyncio
+# nest_asyncio.apply()
 
-checkpointer = asyncio.get_event_loop().run_until_complete(setup())
+# checkpointer = asyncio.get_event_loop().run_until_complete(setup())
 
 
 
-app=graph.compile(checkpointer=checkpointer)
+app=graph.compile()
 
 
 # global config used when invoking the graph
