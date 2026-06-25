@@ -1,6 +1,6 @@
 import os
 import asyncio
-from re import search
+import sys
 
 from dotenv import load_dotenv
 from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -9,6 +9,10 @@ load_dotenv()
 
 TAVILY_API_KEY =os.getenv("TAVILY_API_KEY")
 AVIATIONSTACK_API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
+AVIATIONSTACK_PYTHON = os.getenv(
+    "AVIATIONSTACK_PYTHON",
+    r"D:\GENAI\Multi_agent_MCP\aviationstack-mcp\.venv\Scripts\python.exe"
+)
 OPENWEATHER_API_KEY=os.getenv("OPENWEATHER_API_KEY")
 
 client=MultiServerMCPClient(
@@ -20,28 +24,51 @@ client=MultiServerMCPClient(
     },
 
      # Local MCP Server
-    "aviationstack":{
-                "transport":"stdio",
-                "command": r"D:\GENAI\Multi_agent_MCP\aviationstack-mcp\.venv\Scripts\python.exe",
+    # "aviationstack":{
+    #             "transport":"stdio",
+    #             "command": r"D:\GENAI\Multi_agent_MCP\aviationstack-mcp\.venv\Scripts\python.exe",
 
-                    "args":[
-                    "-m",
-                    "aviationstack_mcp",
-                    "mcp",
-                    "run"
-                ],
-                "env":{
-                    "AVIATIONSTACK_API_KEY": AVIATIONSTACK_API_KEY 
-                }
-            },
+    #                 "args":[
+    #                 "-m",
+    #                 "aviationstack_mcp",
+    #                 "mcp",
+    #                 "run"
+    #             ],
+    
+    # "aviationstack":{
+    #         "transport":"stdio",
+    #         "command": sys.executable,
+    #             "args":[
+    #             "-m",
+    #             "aviationstack_mcp",
+    #             "mcp",
+    #             "run"
+    #         ],
+    #             "env":{
+    #                 "AVIATIONSTACK_API_KEY": AVIATIONSTACK_API_KEY 
+    #             }
+    #         },
+
+    # "aviationstack": {
+    # "transport": "stdio",
+    # "command": AVIATIONSTACK_PYTHON,
+    # "args": ["-m", "aviationstack_mcp", "mcp", "run"],
+    # "env": {"AVIATIONSTACK_API_KEY": AVIATIONSTACK_API_KEY}
+    # },
 
     # Custom MCP Server
+    # "weather":{
+    #             "transport":"stdio",
+    #             "command":r"D:\GENAI\Multi_agent_MCP\Agent1\Scripts\python.exe",
+    #             "args":[
+    #                  r"D:\GENAI\Multi_agent_MCP\custom_weather_mcp.py"
+    #             ],
     "weather":{
-                "transport":"stdio",
-                "command":r"D:\GENAI\Multi_agent_MCP\Agent1\Scripts\python.exe",
-                "args":[
-                     r"D:\GENAI\Multi_agent_MCP\custom_weather_mcp.py"
-                ],
+            "transport":"stdio",
+            "command": sys.executable,
+            "args":[
+                os.path.join(os.path.dirname(__file__), "custom_weather_mcp.py")
+            ],
                 "env":{
                     "OPENWEATHER_API_KEY": OPENWEATHER_API_KEY
                 }
@@ -52,6 +79,7 @@ client=MultiServerMCPClient(
 
 )
 
+print("Weather script path:", os.path.join(os.path.dirname(__file__), "custom_weather_mcp.py"))
 # async def main():
 
 #    tools=await client.get_tools()
@@ -213,7 +241,7 @@ async def weather_mcp_search(city:str):
 
 async def forecast_mcp_search(city:str):
 
-    await initialize_mcp()
+    await initialize_weather_tools()
     if not forecast_tool:
             return "Forecast tool unavailable"
 
@@ -253,11 +281,15 @@ def extract_destination(query:str):
 
     return response.content.strip()
 
+# async def main():
+#     print("Starting Diagnostic...")
+#     async with client:  # Crucial: Spawns sub-processes and sets up networks
+#         await initialize_mcp()
+
 async def main():
     print("Starting Diagnostic...")
-    async with client:  # Crucial: Spawns sub-processes and sets up networks
-        await initialize_mcp()
-
+    await initialize_mcp()
+    print("MCP tools initialized successfully")
 
 
 if __name__=="__main__":
