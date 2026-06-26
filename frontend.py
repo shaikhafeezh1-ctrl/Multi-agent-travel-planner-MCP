@@ -3,7 +3,7 @@ import requests
 import uuid
 
 # ── Config ────────────────────────────────────────────────────────────────────
-API_URL = "http://localhost:8000"
+API_URL = "https://multi-agent-travel-planner-mcp-production.up.railway.app"
 
 st.set_page_config(
     page_title="AI Travel Planner",
